@@ -13,7 +13,8 @@ import {
   images,
 } from "@/constant/HomeData";
 import { InstaIcon } from "@/constant/Svg";
-
+import  Link from "next/link";
+import productdetailpage from "@/app/productdetailpage/page";
 function Home() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [previousIndex, setPreviousIndex] = useState(0);
@@ -104,11 +105,11 @@ function Home() {
 
   return (
     <div className="bg-[#f7f7f8] overflow-x-hidden">
-      <div className="bg-[#f7f7f8] relative">
+      <Link href="/productdetailpage">
         <div className="relative w-full">
           {/* Responsive main carousel */}
           <div
-            className="relative w-full h-auto sm:h-150 md:h-115 lg:h-112.5 overflow-hidden"
+            className="relative w-full h-auto cursor-pointer sm:h-150 md:h-115 lg:h-112.5 overflow-hidden"
             style={{
               aspectRatio: mobileAspectRatio,
             }}
@@ -175,7 +176,7 @@ function Home() {
             </button>
           </div>
         </div>
-      </div>
+      </Link>
 
       <div className="w-full h-auto text-center">
         <Heading

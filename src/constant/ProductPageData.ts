@@ -1,4 +1,25 @@
 
+export type ProductDetails = {
+  sku: string;
+  gallery: string[];
+  highlights: string[];
+  description: string;
+  features: {
+    title: string;
+    image: string;
+    description: string;
+  }[];
+  parts: {
+    title: string;
+    image: string;
+    price: number;
+  }[];
+  specifications: {
+    label: string;
+    value: string;
+  }[];
+};
+
 export type Product = {
   id: number;
   name: string;
@@ -13,6 +34,7 @@ export type Product = {
   vehicle: string;
   completion: string;
   series: string;
+  details: ProductDetails;
 };
 
 export type FilterItem = {
@@ -69,7 +91,7 @@ export const seriesFilters: FilterItem[] = [
   { label: "FCX10 II Series", count: 1 },
 ];
 
-export const products: Product[] = [
+const baseProducts: Omit<Product, "details">[] = [
   {
     id: 1,
     name: "FMS 1:18 FCX18 II Ford F-100 RTR Brushless",
@@ -89,7 +111,7 @@ export const products: Product[] = [
     price: 179.95,
     oldPrice: 189.99,
     image: "/images/productpageimages/image3.webp",
-      hoverImage: "/images/productpageimages/image4.webp",
+    hoverImage: "/images/productpageimages/image4.webp",
     badge: "Save £10.04 GBP",
     stock: "In stock",
     scale: "1:18 Scale",
@@ -104,7 +126,7 @@ export const products: Product[] = [
     price: 139.99,
     oldPrice: 169.99,
     image: "/images/productpageimages/image5.webp",
-   hoverImage: "/images/productpageimages/image6.webp",
+    hoverImage: "/images/productpageimages/image6.webp",
     badge: "Save £30.00 GBP",
     stock: "In stock",
     scale: "1:10 Scale",
@@ -133,7 +155,7 @@ export const products: Product[] = [
     name: "FMS 1:10 FCX10 II Toyota Land Cruiser 80 RS",
     price: 299.99,
     oldPrice: 349.99,
-       image: "/images/productpageimages/image9.webp",
+    image: "/images/productpageimages/image9.webp",
     hoverImage: "/images/productpageimages/image10.webp",
     badge: "Save £50.00 GBP",
     stock: "In stock",
@@ -148,7 +170,7 @@ export const products: Product[] = [
     name: "FMS 1:10 FCX10 Land Rover Camel Trophy",
     price: 339.99,
     oldPrice: 389.99,
-      image: "/images/productpageimages/image11.webp",
+    image: "/images/productpageimages/image11.webp",
     hoverImage: "/images/productpageimages/image12.webp",
     stock: "Low inventory",
     scale: "1:10 Scale",
@@ -418,4 +440,97 @@ export const products: Product[] = [
   },
 ];
 
+// Shared feature images. Product-specific information is generated below.
+const featureImages = [
+  "/images/productdetailpageimages/featureimages/image1.webp",
+  "/images/productdetailpageimages/featureimages/image2.webp",
+  "/images/productdetailpageimages/featureimages/image3.webp",
+  "/images/productdetailpageimages/featureimages/image4.webp",
+  "/images/productdetailpageimages/featureimages/image5.webp",
+  "/images/productdetailpageimages/featureimages/image6.webp",
+  "/images/productdetailpageimages/featureimages/image7.webp",
+  "/images/productdetailpageimages/featureimages/image8.webp",
+];
 
+export const products: Product[] = baseProducts.map((product) => ({
+  ...product,
+
+  details: {
+    sku: `FMS-${product.id}`,
+    gallery: [product.image, product.hoverImage],
+
+    highlights: [
+      `${product.brand} licensed-style RC vehicle design`,
+      `${product.scale} scale model`,
+      `${product.vehicle} vehicle category`,
+      `${product.completion} configuration`,
+      `${product.series} platform`,
+      "Detailed body and realistic appearance",
+      "Designed for RC hobby enthusiasts",
+    ],
+
+    description: `${product.name} is an FMS RC model in ${product.scale} scale. This ${product.vehicle.toLowerCase()} model is part of the ${product.series} range and comes in ${product.completion} configuration. Explore its design, specifications and features.`,
+
+    features: [
+      {
+        title: "Detailed Body Design",
+        image: featureImages[0],
+        description:
+          "A detailed RC vehicle body with a realistic scale appearance.",
+      },
+      {
+        title: "RC Vehicle Performance",
+        image: featureImages[1],
+        description:
+          "Designed for RC hobby driving and model vehicle enthusiasts.",
+      },
+      {
+        title: "Chassis Design",
+        image: featureImages[2],
+        description:
+          "A purpose-built chassis design for this RC model range.",
+      },
+      {
+        title: "Scale Details",
+        image: featureImages[3],
+        description:
+          "Carefully styled details give the model its distinctive look.",
+      },
+      {
+        title: "Hobby Experience",
+        image: featureImages[4],
+        description:
+          "A model for hobbyists who enjoy RC vehicles and accessories.",
+      },
+      {
+        title: "Vehicle Design",
+        image: featureImages[5],
+        description:
+          "Designed around the vehicle's scale and model category.",
+      },
+      {
+        title: "Construction",
+        image: featureImages[6],
+        description:
+          "Built as part of the FMS RC model product range.",
+      },
+      {
+        title: "Ready for RC Fun",
+        image: featureImages[7],
+        description:
+          "Enjoy the RC hobby experience with this FMS model.",
+      },
+    ],
+
+    parts: [],
+
+    specifications: [
+      { label: "Brand", value: product.brand },
+      { label: "Scale", value: product.scale },
+      { label: "Vehicle Type", value: product.vehicle },
+      { label: "Completion", value: product.completion },
+      { label: "Series", value: product.series },
+      { label: "Availability", value: product.stock },
+    ],
+  },
+}));

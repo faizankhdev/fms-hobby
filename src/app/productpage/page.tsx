@@ -1,6 +1,8 @@
+
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import {
   ChevronLeft,
   ChevronRight,
@@ -188,7 +190,10 @@ const Page = () => {
 
   return (
     <main className="min-h-screen bg-[#f7f8fa] px-3 pb-20 text-black sm:px-5 lg:px-6">
-      <Heading heading="All RC Cars" para="Use the filter menu to find your desired model."/>
+      <Heading
+        heading="All RC Cars"
+        para="Use the filter menu to find your desired model."
+      />
 
       <div className="mt-10 flex items-start gap-5 lg:gap-6">
         <aside className="hidden w-70 shrink-0 text-left max-lg:w-55 md:block">
@@ -240,6 +245,7 @@ const Page = () => {
             >
               <SlidersHorizontal size={14} />
               Filters
+
               {selectedFilters.length > 0 && (
                 <span className="flex h-4 min-w-4 items-center justify-center rounded-full bg-amber-500 px-1 text-[10px] text-black">
                   {selectedFilters.length}
@@ -272,31 +278,40 @@ const Page = () => {
             <div className="grid grid-cols-2 gap-x-3 gap-y-5 sm:grid-cols-2 md:grid-cols-3 lg:gap-x-4 lg:gap-y-6">
               {visibleProducts.map((product) => (
                 <article key={product.id} className="min-w-0 text-left">
-                  <div
-                    className="relative group aspect-square w-full overflow-hidden rounded-md bg-white"
-                    style={{
-                      backgroundImage: `url("${product.image}")`,
-                      backgroundPosition: "center",
-                      backgroundSize: "100% 100%",
-                      backgroundRepeat: "no-repeat",
-                    }}
-                  >
-                    <div
-                      className="absolute inset-0 cursor-pointer opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
-                      style={{
-                        backgroundImage: `url("${product.hoverImage}")`,
-                        backgroundPosition: "center",
-                        backgroundSize: "100% 100%",
-                        backgroundRepeat: "no-repeat",
-                      }}
-                    />
+                  {/* Product Image - Click to open details */}
+                  <div className="relative">
+                    <Link
+                      href={`/productdetailpage?id=${product.id}`}
+                      className="relative group block aspect-square w-full overflow-hidden rounded-md bg-white"
+                    >
+                      <div
+                        className="absolute inset-0 transition-opacity duration-500 group-hover:opacity-0"
+                        style={{
+                          backgroundImage: `url("${product.image}")`,
+                          backgroundPosition: "center",
+                          backgroundSize: "100% 100%",
+                          backgroundRepeat: "no-repeat",
+                        }}
+                      />
 
-                    {product.badge && (
-                      <span className="absolute left-1 top-1 z-10 max-w-[85%] rounded-sm bg-orange-600 px-2 py-1 text-[10px] font-bold leading-tight text-white">
-                        {product.badge}
-                      </span>
-                    )}
+                      <div
+                        className="absolute inset-0 opacity-0 transition-opacity duration-500 ease-in-out group-hover:opacity-100"
+                        style={{
+                          backgroundImage: `url("${product.hoverImage}")`,
+                          backgroundPosition: "center",
+                          backgroundSize: "100% 100%",
+                          backgroundRepeat: "no-repeat",
+                        }}
+                      />
 
+                      {product.badge && (
+                        <span className="absolute left-1 top-1 z-10 max-w-[85%] rounded-sm bg-orange-600 px-2 py-1 text-[10px] font-bold leading-tight text-white">
+                          {product.badge}
+                        </span>
+                      )}
+                    </Link>
+
+                    {/* Wishlist button - Separate from Link */}
                     <button
                       type="button"
                       aria-label="Toggle wishlist"
@@ -311,24 +326,36 @@ const Page = () => {
                     >
                       <Heart
                         size={13}
-                        fill={
-                          favorites.includes(product.id)
-                            ? "red"
-                            : "none"
-                        }
+                        fill={favorites.includes(product.id) ? "red" : "none"}
                       />
                     </button>
                   </div>
 
                   <div className="mt-3 flex h-8 items-center gap-2 overflow-hidden">
-                    <img className="w-7 border rounded-full h-7 bg-gray-600" src="/images/productpageimages/cardsmallimage1.webp" alt="" />
-                    <img className="w-7 border rounded-full h-7 bg-gray-600" src="/images/productpageimages/cardsmallimage2.webp" alt="" />
-                    <img className="w-7 border rounded-full h-7 bg-gray-600" src="/images/productpageimages/cardsmallimage3.webp" alt="" />
+                    <img
+                      className="h-7 w-7 rounded-full border bg-gray-600"
+                      src="/images/productpageimages/cardsmallimage1.webp"
+                      alt=""
+                    />
+                    <img
+                      className="h-7 w-7 rounded-full border bg-gray-600"
+                      src="/images/productpageimages/cardsmallimage2.webp"
+                      alt=""
+                    />
+                    <img
+                      className="h-7 w-7 rounded-full border bg-gray-600"
+                      src="/images/productpageimages/cardsmallimage3.webp"
+                      alt=""
+                    />
                   </div>
 
-                  <h2 className="mt-4 line-clamp-2 min-h-8 sm:text-sm md:text-[14px] leading-normal text-gray-800">
+                  {/* Product Name - Click to open details */}
+                  <Link
+                    href={`/productdetailpage?id=${product.id}`}
+                    className="mt-4 block line-clamp-2 min-h-8 text-gray-800 leading-normal hover:text-orange-600 sm:text-sm md:text-[14px]"
+                  >
                     {product.name}
-                  </h2>
+                  </Link>
 
                   <p
                     className={`mt-0 flex items-center gap-1 text-[12px] font-semibold ${
@@ -366,7 +393,7 @@ const Page = () => {
               <button
                 type="button"
                 onClick={clearFilters}
-                className="mt-3 text-lg cursor-pointer border px-3 rounded-lg bg-orange-500 text-white"
+                className="mt-3 cursor-pointer rounded-lg border bg-orange-500 px-3 text-lg text-white"
               >
                 Clear filters
               </button>
