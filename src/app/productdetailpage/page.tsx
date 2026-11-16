@@ -273,35 +273,18 @@ function ProductDetailsPage() {
     router.push("/cart");
   };
 
-  const handleBuyNow = () => {
-    addToCart({
-      id: String(product.id),
-      title: product.name,
-      price: product.price,
-      image: product.image,
-      color,
-      quantity,
-    });
-
-    router.push("/checkout");
-  };
-
   return (
-    <main className="min-h-screen bg-[#f7f7f8] pt-[47px]">
+    <main className="min-h-screen bg-[#f7f7f8] pt-11.75">
       {/* PRODUCT NAVIGATION BAR */}
       <div
         className={`fixed ${
           isPageScrolled ? "top-20" : "top-30"
         } left-0 z-40 w-full bg-[#ffb900] text-white shadow-sm transition-all duration-300`}
       >
-        <div className="mx-auto flex min-h-[47px] max-w-[1400px] items-center justify-center gap-4 px-4 md:gap-10">
+        <div className="mx-auto flex min-h-11.75 max-w-350 items-center justify-center gap-4 px-4 md:gap-10">
           <nav className="flex items-center gap-5 overflow-x-auto whitespace-nowrap text-xs font-semibold md:gap-10 md:text-sm">
             <a href="#features" className="hover:text-black">
               Features
-            </a>
-
-            <a href="#videos" className="hover:text-black">
-              Videos
             </a>
 
             <a href="#parts" className="hover:text-black">
@@ -368,14 +351,14 @@ function ProductDetailsPage() {
 
                 <div
                   ref={thumbnailRef}
-                  className="flex max-h-[390px] w-full flex-col items-center gap-2 overflow-y-auto scroll-smooth"
+                  className="flex max-h-97.5 w-full flex-col items-center gap-2 overflow-y-auto scroll-smooth"
                   style={{ scrollbarWidth: "none" }}
                 >
                   {gallery.map((image, index) => (
                     <button
                       key={image}
                       onClick={() => setActiveImage(index)}
-                      className={`w-full flex-shrink-0 overflow-hidden rounded-sm border transition-colors ${
+                      className={`w-full flex shrink-0 overflow-hidden rounded-sm border transition-colors ${
                         activeImage === index
                           ? "border-[#ff9900]"
                           : "border-gray-200 hover:border-gray-400"
@@ -384,7 +367,7 @@ function ProductDetailsPage() {
                       <img
                         src={image}
                         alt={`${product.name} thumbnail ${index + 1}`}
-                        className="h-[65px] w-full object-cover sm:h-[75px]"
+                        className="h-16.25 w-full object-cover sm:h-18.75"
                       />
                     </button>
                   ))}
@@ -400,7 +383,7 @@ function ProductDetailsPage() {
               </div>
 
               {/* MAIN IMAGE */}
-              <div className="group relative flex min-h-[300px] min-w-0 items-center justify-center overflow-hidden bg-white sm:min-h-[350px]">
+              <div className="group relative flex min-h-75 min-w-0 items-center justify-center overflow-hidden bg-white sm:min-h-87.5">
                 <button
                   onClick={openZoom}
                   className="flex w-full cursor-zoom-in items-center justify-center"
@@ -410,7 +393,7 @@ function ProductDetailsPage() {
                     <img
                       src={currentImage}
                       alt={product.name}
-                      className="max-h-[420px] w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                      className="max-h-105 w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
                     />
                   )}
                 </button>
@@ -428,7 +411,7 @@ function ProductDetailsPage() {
             {/* FULL SCREEN ZOOM */}
             {isZoomOpen && (
               <div
-                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95"
+                className="fixed inset-0 z-100 flex items-center justify-center bg-black/95"
                 onClick={closeZoom}
               >
                 <button
@@ -494,7 +477,7 @@ function ProductDetailsPage() {
                     <ZoomOut size={23} />
                   </button>
 
-                  <span className="min-w-[45px] text-center text-sm text-white">
+                  <span className="min-w-11.25 text-center text-sm text-white">
                     {Math.round(zoom * 100)}%
                   </span>
 
@@ -562,7 +545,7 @@ function ProductDetailsPage() {
                   <img
                     src={item.image}
                     alt={item.title}
-                    className="aspect-[4/3] w-full object-cover"
+                    className="aspect w-full object-cover"
                   />
 
                   <h3 className="mt-3 text-sm font-semibold">
@@ -575,26 +558,6 @@ function ProductDetailsPage() {
                 </div>
               ))}
             </div>
-          </section>
-
-          {/* VIDEOS */}
-          <section
-            id="videos"
-            className="order-3 mt-5 scroll-mt-32 bg-white p-6 text-center"
-          >
-            <h2 className="mb-5 text-xl font-bold">Videos</h2>
-
-            <p className="text-sm">
-              More Videos Please Go To Our YouTube Channel:
-              <a
-                href="https://www.youtube.com/"
-                target="_blank"
-                rel="noreferrer"
-                className="ml-1 font-semibold underline"
-              >
-                FMS Model
-              </a>
-            </p>
           </section>
 
           {/* PARTS */}
@@ -657,7 +620,7 @@ function ProductDetailsPage() {
         </div>
 
         {/* RIGHT SIDE - PRODUCT DETAILS */}
-        <aside className="order-2 bg-white p-5 lg:order-none lg:col-start-2 lg:row-start-1 lg:min-h-0 lg:overflow-y-auto lg:pr-6">
+        <aside className="order-2 bg-white p-5 lg:order-0 lg:col-start-2 lg:row-start-1 lg:min-h-0 lg:overflow-y-auto lg:pr-6">
           <h1 className="text-2xl font-semibold leading-8">
             {product.name}
           </h1>
@@ -784,14 +747,6 @@ function ProductDetailsPage() {
             >
               <ShoppingCart size={18} />
               Add to Cart
-            </button>
-
-            {/* BUY NOW */}
-            <button
-              onClick={handleBuyNow}
-              className="w-full rounded-full bg-black py-3 font-semibold text-white transition-colors hover:bg-gray-800"
-            >
-              Buy It Now
             </button>
           </div>
 
