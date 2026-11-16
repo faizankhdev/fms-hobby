@@ -48,7 +48,6 @@ function ProductDetailsPage() {
   const gallery = product?.details.gallery ?? [];
   const currentImage = gallery[activeImage] || product?.image || "";
 
-  // Calculate total price.
   const totalPrice = product ? product.price * quantity : 0;
 
   // Load saved quantity, color and wishlist.
@@ -56,7 +55,6 @@ function ProductDetailsPage() {
     if (!product) return;
 
     setLoadedProductId(null);
-
     setQuantity(1);
     setColor("Black");
     setLiked(false);
@@ -97,7 +95,7 @@ function ProductDetailsPage() {
     setLoadedProductId(product.id);
   }, [product?.id]);
 
-  // Save quantity and total price together.
+  // Save quantity and total price.
   useEffect(() => {
     if (!product || loadedProductId !== product.id) return;
 
@@ -258,7 +256,6 @@ function ProductDetailsPage() {
     if (gallery.length === 0) return;
 
     setActiveImage((prev) => (prev + 1) % gallery.length);
-
     setZoom(1);
   };
 
@@ -291,7 +288,6 @@ function ProductDetailsPage() {
 
   return (
     <main className="min-h-screen bg-[#f7f7f8] pt-[47px]">
-
       {/* PRODUCT NAVIGATION BAR */}
       <div
         className={`fixed ${
@@ -353,181 +349,183 @@ function ProductDetailsPage() {
       {/* MAIN LAYOUT */}
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,56fr)_minmax(0,44fr)] lg:gap-4 lg:h-[calc(100vh-120px)]">
 
-        {/* LEFT SIDE - GALLERY AND PRODUCT INFORMATION */}
-        <section className="order-1 lg:order-1 lg:overflow-y-auto lg:pb-6 lg:pl-3 lg:pr-5">
+        {/* LEFT CONTENT WRAPPER */}
+        <div className="contents lg:col-start-1 lg:row-start-1 lg:block lg:min-h-0 lg:overflow-y-auto lg:pb-6 lg:pl-3 lg:pr-5">
 
           {/* PRODUCT GALLERY */}
-          <div className="grid grid-cols-[65px_1fr] gap-3 bg-white p-3 sm:grid-cols-[75px_1fr]">
+          <section className="order-1">
+            <div className="grid grid-cols-[65px_1fr] gap-3 bg-white p-3 sm:grid-cols-[75px_1fr]">
 
-            {/* THUMBNAILS */}
-            <div className="flex flex-col items-center">
-              <button
-                onClick={() => scrollThumbnails("up")}
-                className="flex h-7 w-full items-center justify-center text-gray-500 hover:text-black"
-                aria-label="Scroll thumbnails up"
-              >
-                <ChevronUp size={18} />
-              </button>
+              {/* THUMBNAILS */}
+              <div className="flex flex-col items-center">
+                <button
+                  onClick={() => scrollThumbnails("up")}
+                  className="flex h-7 w-full items-center justify-center text-gray-500 hover:text-black"
+                  aria-label="Scroll thumbnails up"
+                >
+                  <ChevronUp size={18} />
+                </button>
 
-              <div
-                ref={thumbnailRef}
-                className="flex max-h-[390px] w-full flex-col items-center gap-2 overflow-y-auto scroll-smooth"
-                style={{ scrollbarWidth: "none" }}
-              >
-                {gallery.map((image, index) => (
-                  <button
-                    key={image}
-                    onClick={() => setActiveImage(index)}
-                    className={`w-full flex-shrink-0 overflow-hidden rounded-sm border transition-colors ${
-                      activeImage === index
-                        ? "border-[#ff9900]"
-                        : "border-gray-200 hover:border-gray-400"
-                    }`}
-                  >
-                    <img
-                      src={image}
-                      alt={`${product.name} thumbnail ${index + 1}`}
-                      className="h-[65px] w-full object-cover sm:h-[75px]"
-                    />
-                  </button>
-                ))}
+                <div
+                  ref={thumbnailRef}
+                  className="flex max-h-[390px] w-full flex-col items-center gap-2 overflow-y-auto scroll-smooth"
+                  style={{ scrollbarWidth: "none" }}
+                >
+                  {gallery.map((image, index) => (
+                    <button
+                      key={image}
+                      onClick={() => setActiveImage(index)}
+                      className={`w-full flex-shrink-0 overflow-hidden rounded-sm border transition-colors ${
+                        activeImage === index
+                          ? "border-[#ff9900]"
+                          : "border-gray-200 hover:border-gray-400"
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${product.name} thumbnail ${index + 1}`}
+                        className="h-[65px] w-full object-cover sm:h-[75px]"
+                      />
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  onClick={() => scrollThumbnails("down")}
+                  className="flex h-7 w-full items-center justify-center text-gray-500 hover:text-black"
+                  aria-label="Scroll thumbnails down"
+                >
+                  <ChevronDown size={18} />
+                </button>
               </div>
 
-              <button
-                onClick={() => scrollThumbnails("down")}
-                className="flex h-7 w-full items-center justify-center text-gray-500 hover:text-black"
-                aria-label="Scroll thumbnails down"
-              >
-                <ChevronDown size={18} />
-              </button>
+              {/* MAIN IMAGE */}
+              <div className="group relative flex min-h-[300px] min-w-0 items-center justify-center overflow-hidden bg-white sm:min-h-[350px]">
+                <button
+                  onClick={openZoom}
+                  className="flex w-full cursor-zoom-in items-center justify-center"
+                  aria-label="Open product image zoom"
+                >
+                  {currentImage && (
+                    <img
+                      src={currentImage}
+                      alt={product.name}
+                      className="max-h-[420px] w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                    />
+                  )}
+                </button>
+
+                <button
+                  onClick={openZoom}
+                  className="absolute bottom-3 right-3 rounded-full border bg-white p-3 shadow-sm transition-colors hover:bg-gray-100"
+                  aria-label="Zoom image"
+                >
+                  <ZoomIn size={19} />
+                </button>
+              </div>
             </div>
 
-            {/* MAIN IMAGE */}
-            <div className="group relative flex min-h-[300px] min-w-0 items-center justify-center overflow-hidden bg-white sm:min-h-[350px]">
-              <button
-                onClick={openZoom}
-                className="flex w-full cursor-zoom-in items-center justify-center"
-                aria-label="Open product image zoom"
+            {/* FULL SCREEN ZOOM */}
+            {isZoomOpen && (
+              <div
+                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95"
+                onClick={closeZoom}
               >
-                {currentImage && (
+                <button
+                  onClick={closeZoom}
+                  className="absolute right-5 top-5 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20"
+                  aria-label="Close image viewer"
+                >
+                  <X size={25} />
+                </button>
+
+                <div className="absolute left-1/2 top-7 z-20 -translate-x-1/2 text-sm text-white">
+                  {activeImage + 1} / {gallery.length}
+                </div>
+
+                <button
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    previousImage();
+                  }}
+                  className="absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/25 md:left-8"
+                  aria-label="Previous image"
+                >
+                  <ChevronLeft size={28} />
+                </button>
+
+                <div
+                  className="flex h-full w-full items-center justify-center overflow-auto p-6"
+                  onClick={(event) => event.stopPropagation()}
+                >
                   <img
                     src={currentImage}
                     alt={product.name}
-                    className="max-h-[420px] w-full object-contain transition-transform duration-300 group-hover:scale-[1.02]"
+                    draggable={false}
+                    style={{
+                      transform: `scale(${zoom})`,
+                      transition: "transform 200ms ease",
+                    }}
+                    className="max-h-[80vh] max-w-[85vw] object-contain"
                   />
-                )}
-              </button>
-
-              <button
-                onClick={openZoom}
-                className="absolute bottom-3 right-3 rounded-full border bg-white p-3 shadow-sm transition-colors hover:bg-gray-100"
-                aria-label="Zoom image"
-              >
-                <ZoomIn size={19} />
-              </button>
-            </div>
-          </div>
-
-          {/* FULL SCREEN ZOOM */}
-          {isZoomOpen && (
-            <div
-              className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95"
-              onClick={closeZoom}
-            >
-              <button
-                onClick={closeZoom}
-                className="absolute right-5 top-5 z-30 rounded-full bg-white/10 p-3 text-white hover:bg-white/20"
-                aria-label="Close image viewer"
-              >
-                <X size={25} />
-              </button>
-
-              <div className="absolute left-1/2 top-7 z-20 -translate-x-1/2 text-sm text-white">
-                {activeImage + 1} / {gallery.length}
-              </div>
-
-              <button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  previousImage();
-                }}
-                className="absolute left-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/25 md:left-8"
-                aria-label="Previous image"
-              >
-                <ChevronLeft size={28} />
-              </button>
-
-              <div
-                className="flex h-full w-full items-center justify-center overflow-auto p-6"
-                onClick={(event) => event.stopPropagation()}
-              >
-                <img
-                  src={currentImage}
-                  alt={product.name}
-                  draggable={false}
-                  style={{
-                    transform: `scale(${zoom})`,
-                    transition: "transform 200ms ease",
-                  }}
-                  className="max-h-[80vh] max-w-[85vw] object-contain"
-                />
-              </div>
-
-              <button
-                onClick={(event) => {
-                  event.stopPropagation();
-                  nextImage();
-                }}
-                className="absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/25 md:right-8"
-                aria-label="Next image"
-              >
-                <ChevronRight size={28} />
-              </button>
-
-              <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-4 rounded-full bg-white/10 px-5 py-3 backdrop-blur-md">
-                <button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    setZoom((prev) => Math.max(1, prev - 0.25));
-                  }}
-                  disabled={zoom <= 1}
-                  className="text-white hover:text-[#ffb900] disabled:opacity-30"
-                  aria-label="Zoom out"
-                >
-                  <ZoomOut size={23} />
-                </button>
-
-                <span className="min-w-[45px] text-center text-sm text-white">
-                  {Math.round(zoom * 100)}%
-                </span>
+                </div>
 
                 <button
                   onClick={(event) => {
                     event.stopPropagation();
-                    setZoom((prev) => Math.min(3, prev + 0.25));
+                    nextImage();
                   }}
-                  disabled={zoom >= 3}
-                  className="text-white hover:text-[#ffb900] disabled:opacity-30"
-                  aria-label="Zoom in"
+                  className="absolute right-3 top-1/2 z-20 -translate-y-1/2 rounded-full bg-white/10 p-3 text-white hover:bg-white/25 md:right-8"
+                  aria-label="Next image"
                 >
-                  <ZoomIn size={23} />
+                  <ChevronRight size={28} />
                 </button>
 
-                <button
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    setZoom(1);
-                  }}
-                  className="border-l border-white/30 pl-4 text-xs text-white hover:text-[#ffb900]"
-                >
-                  Reset
-                </button>
+                <div className="absolute bottom-6 left-1/2 z-20 flex -translate-x-1/2 items-center gap-4 rounded-full bg-white/10 px-5 py-3 backdrop-blur-md">
+                  <button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setZoom((prev) => Math.max(1, prev - 0.25));
+                    }}
+                    disabled={zoom <= 1}
+                    className="text-white hover:text-[#ffb900] disabled:opacity-30"
+                    aria-label="Zoom out"
+                  >
+                    <ZoomOut size={23} />
+                  </button>
+
+                  <span className="min-w-[45px] text-center text-sm text-white">
+                    {Math.round(zoom * 100)}%
+                  </span>
+
+                  <button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setZoom((prev) => Math.min(3, prev + 0.25));
+                    }}
+                    disabled={zoom >= 3}
+                    className="text-white hover:text-[#ffb900] disabled:opacity-30"
+                    aria-label="Zoom in"
+                  >
+                    <ZoomIn size={23} />
+                  </button>
+
+                  <button
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setZoom(1);
+                    }}
+                    className="border-l border-white/30 pl-4 text-xs text-white hover:text-[#ffb900]"
+                  >
+                    Reset
+                  </button>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </section>
 
           {/* TOP HIGHLIGHTS */}
-          <div className="mt-5 bg-white p-5">
+          <section className="order-3 mt-5 bg-white p-5">
             <h2 className="mb-5 text-center text-xl font-bold">
               Top Highlights
             </h2>
@@ -537,10 +535,10 @@ function ProductDetailsPage() {
                 <li key={index}>{item}</li>
               ))}
             </ul>
-          </div>
+          </section>
 
           {/* DESCRIPTION */}
-          <div className="mt-5 bg-white p-5">
+          <section className="order-3 mt-5 bg-white p-5">
             <h2 className="mb-5 text-center text-xl font-bold">
               Description
             </h2>
@@ -550,10 +548,10 @@ function ProductDetailsPage() {
             <p className="text-sm leading-6 text-gray-600">
               {product.details.description}
             </p>
-          </div>
+          </section>
 
           {/* FEATURES */}
-          <div id="features" className="mt-5 scroll-mt-32 bg-white p-5">
+          <section id="features" className="order-3 mt-5 scroll-mt-32 bg-white p-5">
             <h2 className="mb-5 text-center text-xl font-bold">
               Features
             </h2>
@@ -577,12 +575,12 @@ function ProductDetailsPage() {
                 </div>
               ))}
             </div>
-          </div>
+          </section>
 
           {/* VIDEOS */}
-          <div
+          <section
             id="videos"
-            className="mt-5 scroll-mt-32 bg-white p-6 text-center"
+            className="order-3 mt-5 scroll-mt-32 bg-white p-6 text-center"
           >
             <h2 className="mb-5 text-xl font-bold">Videos</h2>
 
@@ -597,10 +595,10 @@ function ProductDetailsPage() {
                 FMS Model
               </a>
             </p>
-          </div>
+          </section>
 
           {/* PARTS */}
-          <div id="parts" className="mt-5 scroll-mt-32 bg-white p-5">
+          <section id="parts" className="order-3 mt-5 scroll-mt-32 bg-white p-5">
             <h2 className="mb-5 text-center text-xl font-bold">
               Parts
             </h2>
@@ -630,10 +628,10 @@ function ProductDetailsPage() {
                 Parts information is not available for this product yet.
               </p>
             )}
-          </div>
+          </section>
 
           {/* MANUAL & SUPPORT */}
-          <div id="manual" className="mt-5 scroll-mt-32 bg-white p-5">
+          <section id="manual" className="order-3 mt-5 scroll-mt-32 bg-white p-5">
             <h2 className="mb-5 text-center text-xl font-bold">
               Manual & Support
             </h2>
@@ -655,11 +653,11 @@ function ProductDetailsPage() {
                 </button>
               ))}
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
 
         {/* RIGHT SIDE - PRODUCT DETAILS */}
-        <aside className="order-2 bg-white p-5 lg:order-2 lg:overflow-y-auto lg:pr-6">
+        <aside className="order-2 bg-white p-5 lg:order-none lg:col-start-2 lg:row-start-1 lg:min-h-0 lg:overflow-y-auto lg:pr-6">
           <h1 className="text-2xl font-semibold leading-8">
             {product.name}
           </h1>
