@@ -354,7 +354,7 @@ function ProductDetailsPage() {
       <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,56fr)_minmax(0,44fr)] lg:gap-4 lg:h-[calc(100vh-120px)]">
 
         {/* LEFT SIDE */}
-        <section className="lg:overflow-y-auto lg:pb-6 lg:pl-3 lg:pr-5">
+        <section className="order-2 lg:order-1 lg:overflow-y-auto lg:pb-6 lg:pl-3 lg:pr-5">
 
           {/* PRODUCT GALLERY */}
           <div className="grid grid-cols-[65px_1fr] gap-3 bg-white p-3 sm:grid-cols-[75px_1fr]">
@@ -659,7 +659,7 @@ function ProductDetailsPage() {
         </section>
 
         {/* RIGHT SIDE */}
-        <aside className="bg-white p-5 lg:overflow-y-auto lg:pr-6">
+        <aside className="order-1 bg-white p-5 lg:order-2 lg:overflow-y-auto lg:pr-6">
           <h1 className="text-2xl font-semibold leading-8">
             {product.name}
           </h1>
